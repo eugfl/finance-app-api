@@ -13,7 +13,8 @@ export class PostgresGetUserBalanceRepository {
                     - SUM(CASE WHEN type = 'INVESTMENT' THEN amount ELSE 0 END)
                 ) AS balance
                 FROM transactions
-                WHERE user_id = $1;`[userId],
+                WHERE user_id = $1;`,
+            [userId],
         )
 
         return {
