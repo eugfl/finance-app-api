@@ -100,7 +100,7 @@
     },
     "type": "module",
     "scripts": {
-        "test": "jest",
+        "test": "jest --silent",
         "test:watch": "jest --watch --silent",
         "postinstall": "npx husky install && npx prisma generate",
         "start:dev": "node --watch index.js"
