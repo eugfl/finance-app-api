@@ -1,5 +1,11 @@
 import { updateTransactionSchema } from '../../schemas/index.js'
-import { serverError, badRequest, ok } from '../helpers/index.js'
+import {
+    serverError,
+    badRequest,
+    ok,
+    checkIfIdIsValid,
+    invalidIdResponse,
+} from '../helpers/index.js'
 import { ZodError } from 'zod'
 
 export class UpdateTransactionController {
@@ -8,6 +14,12 @@ export class UpdateTransactionController {
     }
     async execute(httpRequest) {
         try {
+            const idIsValid = checkIfIdIsValid(httpRequest.params.transactionId)
+
+            if (!idIsValid) {
+                return invalidIdResponse()
+            }
+
             const params = httpRequest.body
 
             await updateTransactionSchema.parseAsync(params)
