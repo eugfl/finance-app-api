@@ -120,4 +120,21 @@ describe('UpdateTransactionController', () => {
         //assert
         expect(result.statusCode).toBe(500)
     })
+
+    it('should return 400 when date is invalid', async () => {
+        //arrange
+        const { sut } = makeSut()
+
+        //act
+        const result = await sut.execute({
+            ...baseHttpRequest,
+            body: {
+                ...baseHttpRequest.body,
+                date: 'invalid_date',
+            },
+        })
+
+        //assert
+        expect(result.statusCode).toBe(400)
+    })
 })
