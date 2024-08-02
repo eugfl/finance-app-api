@@ -55,4 +55,21 @@ describe('UpdateTransactionController', () => {
         //assert
         expect(result.statusCode).toBe(400)
     })
+
+    it('should return 400 when unallowed field is provided', async () => {
+        //arrange
+        const { sut } = makeSut()
+
+        //act
+        const result = await sut.execute({
+            ...baseHttpRequest,
+            body: {
+                ...baseHttpRequest.body,
+                unallowed_field: 'unallowed_value',
+            },
+        })
+
+        //assert
+        expect(result.statusCode).toBe(400)
+    })
 })
