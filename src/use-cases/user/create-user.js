@@ -2,13 +2,13 @@ import { EmailAlreadyInUseError } from '../../errors/user.js'
 
 export class CreateUserUseCase {
     constructor(
-        createUserRepository,
         getUserByEmailRepository,
+        createUserRepository,
         passwordHasherAdapter,
         idGeneratorAdapter,
     ) {
-        this.createUserRepository = createUserRepository
         this.getUserByEmailRepository = getUserByEmailRepository
+        this.createUserRepository = createUserRepository
         this.passwordHasherAdapter = passwordHasherAdapter
         this.idGeneratorAdapter = idGeneratorAdapter
     }
