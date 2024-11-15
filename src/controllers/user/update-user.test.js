@@ -1,10 +1,11 @@
 import { EmailAlreadyInUseError } from '../../errors/user'
 import { UpdateUserController } from './update-user'
 import { faker } from '@faker-js/faker'
+import { user } from '../../tests'
 
 describe('UpdateUserController', () => {
     class UpdateUserUseCaseStub {
-        async execute(user) {
+        async execute() {
             return user
         }
     }
