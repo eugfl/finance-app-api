@@ -25,10 +25,6 @@ export class DeleteTransactionController {
                     httpRequest.params.transactionId,
                 )
 
-            if (!deletedTransaction) {
-                return transactionNotFoundResponse()
-            }
-
             return ok(deletedTransaction)
         } catch (error) {
             if (error instanceof TransactionNotFoundError) {
