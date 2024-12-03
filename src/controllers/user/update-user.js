@@ -1,4 +1,4 @@
-import { EmailAlreadyInUseError } from '../../errors/user.js'
+import { EmailAlreadyInUseError, UserNotFoundError } from '../../errors/user.js'
 import {
     checkIfIdIsValid,
     invalidIdResponse,
@@ -33,10 +33,6 @@ export class UpdateUserController {
                 params,
             )
 
-            if (!updatedUser) {
-                return userNotFoundResponse()
-            }
-
             return ok(updatedUser)
         } catch (error) {
             if (error instanceof ZodError) {
@@ -48,6 +44,11 @@ export class UpdateUserController {
             if (error instanceof EmailAlreadyInUseError) {
                 return badRequest({ message: error.message })
             }
+
+            if (error instanceof UserNotFoundError) {
+                return userNotFoundResponse()
+            }
+
             return serverError()
         }
     }
