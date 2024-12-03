@@ -167,4 +167,20 @@ describe('UpdateUserController', () => {
         //assert
         expect(response.statusCode).toBe(404)
     })
+
+    it('should return 400 with invalidIdResponse structure for invalid id', async () => {
+        // arrange
+        const { sut } = makeSut()
+        const validationHelpers = require('../helpers/validation.js')
+        jest.spyOn(validationHelpers, 'checkIfIdIsValid').mockReturnValueOnce(
+            false,
+        )
+
+        // act
+        const response = await sut.execute(httpResquest)
+
+        // assert
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toHaveProperty('message')
+    })
 })
