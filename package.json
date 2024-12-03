@@ -19,6 +19,7 @@
         "color-name": "^1.1.4",
         "concat-map": "^0.0.1",
         "cross-spawn": "^7.0.6",
+        "dayjs": "^1.11.13",
         "debug": "^4.3.7",
         "deep-is": "^0.1.4",
         "doctrine": "^3.0.0",
