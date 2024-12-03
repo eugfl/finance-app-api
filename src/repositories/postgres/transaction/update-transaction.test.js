@@ -6,6 +6,15 @@ import { TransactionType } from '@prisma/client'
 import dayjs from 'dayjs'
 
 describe('PostgresUpdateTransactionRepository', () => {
+    const params = {
+        id: faker.string.uuid(),
+        user_id: user.id,
+        name: faker.commerce.productName(),
+        date: faker.date.anytime().toISOString(),
+        type: TransactionType.EXPENSE,
+        amount: Number(faker.finance.amount()),
+    }
+
     it('should update a transaction on db', async () => {
         //arrange
         await prisma.user.create({ data: user })
@@ -13,14 +22,6 @@ describe('PostgresUpdateTransactionRepository', () => {
             data: { ...transaction, user_id: user.id },
         })
         const sut = new PostgresUpdateTransactionRepository()
-        const params = {
-            id: faker.string.uuid(),
-            user_id: user.id,
-            name: faker.commerce.productName(),
-            date: faker.date.anytime().toISOString(),
-            type: TransactionType.EXPENSE,
-            amount: Number(faker.finance.amount()),
-        }
 
         //act
         const result = await sut.execute(transaction.id, params)
@@ -35,5 +36,26 @@ describe('PostgresUpdateTransactionRepository', () => {
         )
         expect(dayjs(result.date).month()).toBe(dayjs(params.date).month())
         expect(dayjs(result.date).year()).toBe(dayjs(params.date).year())
+    })
+
+    it('should call Prisma with correct params', async () => {
+        //arrange
+        await prisma.user.create({ data: user })
+        await prisma.transaction.create({
+            data: { ...transaction, user_id: user.id },
+        })
+        const prismaSpy = jest.spyOn(prisma.transaction, 'update')
+        const sut = new PostgresUpdateTransactionRepository()
+
+        //act
+        await sut.execute(transaction.id, { ...transaction, user_id: user.id })
+
+        //assert
+        expect(prismaSpy).toHaveBeenCalledWith({
+            where: {
+                id: transaction.id,
+            },
+            data: { ...transaction, user_id: user.id },
+        })
     })
 })
